@@ -11,7 +11,7 @@
 <body onload="getData()">
 
     <div style="margin:0 auto;">
-        <form action="#" onsubmit="login()">
+        <form onsubmit="handleLogin();return false">
             <label>Email</label>
             <input type="email" placeholder="Email" id="email" required>
             <br />
@@ -20,8 +20,7 @@
             <input type="password" placeholder="Password" id="password" required>
             <br />
             <br />
-            <!-- <input type="submit" value=""> -->
-            <input type="submit" value="Login" />
+            <input type="submit" value="submit" />
             <br />
             <br />
             <a href="./signup.html">Signup</a>
