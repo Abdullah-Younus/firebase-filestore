@@ -74,55 +74,53 @@ function getData() {
 
 }
 
+
 function handleLogin() {
+    let user = JSON.parse(localStorage.getItem('userData'));
     let obj = {
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
     };
     let emailExist = userData.some(user => user.email === obj.email); // ture ya false
     let passwordExist = userData.some(user => user.password === obj.password);
-    if (emailExist && passwordExist) {
-        alert('login success');
-        window.location.href = './home.html';
-    }
-    else if (emailExist === false) {
-        alert('email invalid');
-    }
-    else if (passwordExist === false) {
-        alert('password invalid');
-    } else {
-        alert('invalid email or password');
-    }
+    console.log(emailExist);
+    // if (emailExist && passwordExist) {
+    //     alert('login success');
+    //     window.location.href = './home.html';
+    // }
+    // else if (emailExist === false) {
+    //     alert('email invalid');
+    // }
+    // else if (passwordExist === false) {
+    //     alert('password invalid');
+    // } else {
+    //     alert('invalid email or password');
+    // }
 }
 
 
-// function login() {
-//     let obj = {
-//         email: document.getElementById('email').value,
-//         password: document.getElementById('password').value,
-//     };
-//     let emailExist = userData.some(user => user.email === obj.email);
-//     let passwordExist = userData.some(user => user.password === obj.password);
+// createfrom function data store firebase filestore
 
-//     if (emailExist && passwordExist) {
-//         alert('login success');
-//         window.location.href = './home.html';
+
+// function createhandleFrom() {
+//     let currentuser = JSON.parse(localStorage.getItem('currentuser'));
+//     console.log(currentuser);
+
+//     // document.write(currentuser)
+//     var obj1 = {
+//         txt_field: document.getElementById('txt_field').value,
+//         title_item: document.getElementById('title_item').value,
+//         des_item: document.getElementById('des_item').value,
+//         product_search: document.getElementById('product_search').value,
+//         img: document.getElementById('img').value,
+//         date: document.getElementById('date').value,
+//         currentuser: currentuser.name,
 //     }
-//     else if (emailExist === false) {
-//         alert('email invalid');
-//     }
-//     else if (passwordExist === false) {
-//         alert('password invalid');
-//     } else {
-//         alert('invalid email or password');
-//     }
-//     return false;
+//     db.collection("createform").add(obj1).then((docRef) => {
+//         console.log("Document written with ID: ", docRef.id);
+//         alert('Data success');
+//     }).catch((error) => {
+//         console.error("Error adding document: ", error);
+//     });
+
 // }
-
-
-
-
-
-
-
-
