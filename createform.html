@@ -10,19 +10,24 @@
 
 <body>
     <div>
+
+
+    </div>
+
+    <div>
         <form onsubmit="createhandleFrom();return false">
 
             <label>text field</label>
             <br />
-            <input type="text" id="txt_field" />
+            <input type="text" id="txt_field" required />
             <br />
             <label>title of items</label>
             <br />
-            <input type="text" id="title_item" />
+            <input type="text" id="title_item" required />
             <br />
             <label>description of items</label>
             <br />
-            <input type="text" id="des_item" />
+            <input type="text" id="des_item" required />
             <br />
             <br />
             <span>
@@ -38,14 +43,14 @@
 
             <span>
                 <label>image uploaded</label>
-                <input type="file" id="img" />
+                <input type="file" id="files" required>
             </span>
 
             <br />
             <br />
             <span>
                 <label>Date:</label>
-                <input type="date" id="date" />
+                <input type="date" id="date" required />
             </span>
             <br />
             <br />
@@ -54,7 +59,9 @@
     </div>
 
 
+
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="app.js"></script>
 </body>

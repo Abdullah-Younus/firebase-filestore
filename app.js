@@ -11,15 +11,16 @@ const firebaseConfig = {
     storageBucket: "test-d3ff6.appspot.com",
     messagingSenderId: "620970481245",
     appId: "1:620970481245:web:daaba434f907f09e38dfb4",
-    measurementId: "G-ERP7EDK9VF"
+    measurementId: "G-ERP7EDK9VF",
+    storageBucket: "test-d3ff6.appspot.com",
 };
 
 firebase.initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get a reference to the service
 const db = firebase.firestore();
-
-var userData = [];
+var userData = [{ name: 'sameer', email: 'default@gmail.com', password: '123' }];
 var isFound = false;
+var storageRef = firebase.storage().ref("images");
 
 var form = document.getElementById('myForm');
 function handleForm(event) {
@@ -59,13 +60,13 @@ form.addEventListener('submit', handleForm);
 //     });
 // }
 // get data from Firebase
-function getData() {
+async function getData() {
     try {
-        db.collection("formdata").get().then((querySnapshot) => {
+        await db.collection("formdata").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 // console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-                localStorage.setItem('userData', JSON.stringify(userData));
                 userData.push(doc.data())
+                localStorage.setItem('userData', JSON.stringify(userData));
                 console.log("Document userData: ", userData);
             });
         });
@@ -95,6 +96,22 @@ function handleLogin() {
     console.log('currentUser' + isFound);
 }
 
+// image upload firebase?
+
+function uploadData() {
+    let file = document.getElementById('files');
+    storageRef.put(file).then(() => {
+        firebase.storage().ref().child("images").getDownloadURL()
+            .then((downloadURL) => {
+                console.log(downloadURL)
+                localStorage.setItem('imageURL', downloadURL)
+            })
+    })
+
+}
+
+
+
 
 
 // createfrom function data store firebase filestore
@@ -102,25 +119,31 @@ function handleLogin() {
 
 function createhandleFrom() {
     let currentuser = JSON.parse(localStorage.getItem('currentUser'));
-    // console.log(currentuser.name);
-    // document.write(currentuser)
+    let imageURL = localStorage.getItem('imageURL');
     var obj1 = {
         user: currentuser.name,
+        img: imageURL,
         txt_field: document.getElementById('txt_field').value,
         title_item: document.getElementById('title_item').value,
         des_item: document.getElementById('des_item').value,
         product_search: document.getElementById('product_search').value,
-        img: document.getElementById('img').value,
-        date: document.getElementById('date').value
+        date: document.getElementById('date').value,
     }
-    console.log('obj1', obj1);
+    // console.log('obj1', obj1);
     db.collection("createform").add(obj1).then((docRef) => {
-        console.log("Document written with ID: ", docRef.id);
+        // console.log("Document written with ID: ", docRef.id);
         alert('Data success');
     }).catch((error) => {
         console.error("Error adding document: ", error);
     });
+    uploadData();
 }
+
+
+
+
+
+
 
 
 
