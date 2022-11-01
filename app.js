@@ -105,7 +105,7 @@ function createhandleFrom() {
     // console.log(currentuser.name);
     // document.write(currentuser)
     var obj1 = {
-        currentuser: currentuser.name,
+        user: currentuser.name,
         txt_field: document.getElementById('txt_field').value,
         title_item: document.getElementById('title_item').value,
         des_item: document.getElementById('des_item').value,
