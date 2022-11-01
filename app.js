@@ -19,6 +19,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 var userData = [];
+var isFound = false;
 
 var form = document.getElementById('myForm');
 function handleForm(event) {
@@ -63,64 +64,64 @@ function getData() {
         db.collection("formdata").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 // console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
+                localStorage.setItem('userData', JSON.stringify(userData));
                 userData.push(doc.data())
-                console.log('userData', userData)
+                console.log("Document userData: ", userData);
             });
         });
+
     } catch (error) {
         console.log(error);
     }
-
-
 }
 
-
 function handleLogin() {
-    let user = JSON.parse(localStorage.getItem('userData'));
+    let users = JSON.parse(localStorage.getItem('userData'));
     let obj = {
         email: document.getElementById('email').value,
         password: document.getElementById('password').value,
     };
-    let emailExist = userData.some(user => user.email === obj.email); // ture ya false
-    let passwordExist = userData.some(user => user.password === obj.password);
-    console.log(emailExist);
-    // if (emailExist && passwordExist) {
-    //     alert('login success');
-    //     window.location.href = './home.html';
-    // }
-    // else if (emailExist === false) {
-    //     alert('email invalid');
-    // }
-    // else if (passwordExist === false) {
-    //     alert('password invalid');
-    // } else {
-    //     alert('invalid email or password');
-    // }
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].email == obj.email && users[i].password == obj.password) {
+            alert('login success');
+            localStorage.setItem('currentUser', JSON.stringify(users[i]));
+            isFound = true;
+            window.location.href = './home.html';
+            break;
+        } else {
+            isFound = false;
+        }
+    }
+    console.log('currentUser' + isFound);
 }
+
 
 
 // createfrom function data store firebase filestore
 
 
-// function createhandleFrom() {
-//     let currentuser = JSON.parse(localStorage.getItem('currentuser'));
-//     console.log(currentuser);
+function createhandleFrom() {
+    let currentuser = JSON.parse(localStorage.getItem('currentUser'));
+    // console.log(currentuser.name);
+    // document.write(currentuser)
+    var obj1 = {
+        currentuser: currentuser.name,
+        txt_field: document.getElementById('txt_field').value,
+        title_item: document.getElementById('title_item').value,
+        des_item: document.getElementById('des_item').value,
+        product_search: document.getElementById('product_search').value,
+        img: document.getElementById('img').value,
+        date: document.getElementById('date').value
+    }
+    console.log('obj1', obj1);
+    db.collection("createform").add(obj1).then((docRef) => {
+        console.log("Document written with ID: ", docRef.id);
+        alert('Data success');
+    }).catch((error) => {
+        console.error("Error adding document: ", error);
+    });
+}
 
-//     // document.write(currentuser)
-//     var obj1 = {
-//         txt_field: document.getElementById('txt_field').value,
-//         title_item: document.getElementById('title_item').value,
-//         des_item: document.getElementById('des_item').value,
-//         product_search: document.getElementById('product_search').value,
-//         img: document.getElementById('img').value,
-//         date: document.getElementById('date').value,
-//         currentuser: currentuser.name,
-//     }
-//     db.collection("createform").add(obj1).then((docRef) => {
-//         console.log("Document written with ID: ", docRef.id);
-//         alert('Data success');
-//     }).catch((error) => {
-//         console.error("Error adding document: ", error);
-//     });
 
-// }
+
+
