@@ -38,23 +38,6 @@ function handleForm(event) {
 
 form.addEventListener('submit', handleForm);
 
-// function handleForm(e) {
-//     e.preventDefault();
-//     let obj = {
-//         name: document.getElementById('name').value,
-//         email: document.getElementById('email').value,
-//         password: document.getElementById('password').value,
-//     };
-//     // event.preventDefault();
-//     db.collection("formdata").add(obj).then((docRef) => {
-//         console.log("Document written with ID: ", docRef.id);
-//         alert('SignUp success');
-//         window.location.href = './index.html';
-//     }).catch((error) => {
-//         console.error("Error adding document: ", error);
-//     });
-// }
-// get data from Firebase
 async function getData() {
     try {
         await db.collection("formdata").get().then((querySnapshot) => {
@@ -147,7 +130,6 @@ function handleLogin() {
 
 //     // uploadData();
 // }
-
 
 
 

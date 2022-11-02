@@ -6,18 +6,57 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <!-- <style>
+        .container {
+
+            padding: 2px 16px;
+        }
+
+        .card {
+            width: 20%;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            border-radius: 5px;
+            /* 5px rounded corners */
+        }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            border-radius: 5px 5px 0 0;
+        }
+    </style> -->
 </head>
 
-<body>
+
+<body onload="getallData();check()">
     <div>
         <a href="./createform.html">Create From</a>
     </div>
+
+    <div id="card" style="width:50%;">
+
+    </div>
+    <span>
+        <label>Found:</label>
+        <input type="checkbox" name="found" id="found" value="found" />
+    </span>
+
+    <br />
+    <br />
+    <span>
+        <label>Lost:</label>
+        <input type="checkbox" name="lost" id="lost" value="lost" checked />
+    </span>
 
 
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="app.js"></script>
+    <script src="home.js"></script>
 </body>
 
 </html>

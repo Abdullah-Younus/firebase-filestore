@@ -26,7 +26,7 @@ async function uploadData() {
         // Uploaded completed successfully, now we can get the download URL
         await thisref.snapshot.ref.getDownloadURL().then(function (downloadURL) {
             //getting url of image
-            console.log(downloadURL);
+            console.log('image URL', downloadURL);
             localStorage.setItem('imageURL', downloadURL)
         });
     });
@@ -35,6 +35,7 @@ async function uploadData() {
 function createhandleFrom() {
     let currentuser = JSON.parse(localStorage.getItem('currentUser'));
     let imageURL = localStorage.getItem('imageURL');
+
     var obj1 = {
         user: currentuser.name,
         img: imageURL,
@@ -44,7 +45,7 @@ function createhandleFrom() {
         product_search: document.getElementById('product_search').value,
         date: document.getElementById('date').value,
     }
-    // console.log('obj1', obj1);
+    console.log('obj1', obj1);
     db.collection("createform").add(obj1).then((docRef) => {
         // console.log("Document written with ID: ", docRef.id);
         alert('Data success');
