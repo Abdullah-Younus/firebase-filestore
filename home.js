@@ -41,16 +41,25 @@ function check() {
     let users = localStorage.getItem("all");
     let alluserdata = JSON.parse(users);
     console.log('All Data', alluserdata);
-    // alluserdata.map((e) => {
-    //     console.log(e.img);
-    // })
-    // alluserdata.forEach((user) => {
-    //     console.log(user);
-    //     // const img = document.createElement("img");
-    //     // img.src = user.img;
-    //     // div = div.b.appendChild(img);
-    //     // console.log(div);
-    // })
+    alluserdata.forEach((user) => {
+        document.getElementById('card').innerHTML += `
+        <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
+            <img src="${user.img}" style="width:300px;height:200px;" />
+            <br/>
+            <br/>   
+            <label>Title field:${user.txt_field}</label>
+            <label>Title Item:${user.title_item}</label>
+            <label>Product Search:${user.product_search}</label>
+            <label>Description:${user.des_item}</label>
+            <label>Description:${user.date}</label>
+            <label><b>Posted By:${user.user}</b></label>
+        </div>
+        `
+        // const img = document.createElement("img");
+        // img.src = user.img;
+        // div = div.b.appendChild(img);
+        // console.log(div);
+    })
 
 
 }

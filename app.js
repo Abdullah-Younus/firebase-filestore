@@ -71,6 +71,7 @@ function handleLogin() {
             isFound = false;
         }
     }
+    !isFound && alert('Invalid Credentials');
     console.log('currentUser' + isFound);
 }
 

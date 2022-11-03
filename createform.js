@@ -52,7 +52,7 @@ function createhandleFrom() {
     }).catch((error) => {
         console.error("Error adding document: ", error);
     });
-    uploadData();
+    // uploadData();
 }
 
 
