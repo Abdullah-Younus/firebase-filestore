@@ -36,22 +36,27 @@
     <div>
         <a href="./createform.html">Create From</a>
     </div>
+    <div id="check" style="width: 80%; display: flex;justify-content: space-between;flex-wrap: wrap;float: right;">
+
+    </div>
 
     <div id="card" style="width: 80%; display: flex;justify-content: space-between;flex-wrap: wrap;float: right;">
     </div>
     <br />
     <br />
     <span>
-        <label>Found:</label>
-        <input type="checkbox" name="found" id="found" value="found" />
+        <label for="found">Found:</label>
+        <input type="checkbox" name="found" id="found" value="found" onclick="response()" />
     </span>
 
     <br />
     <br />
     <span>
-        <label>Lost:</label>
-        <input type="checkbox" name="lost" id="lost" value="lost" checked />
+        <label for="lost">Lost:</label>
+        <input type="checkbox" name="lost" id="lost" value="lost"  onclick="lost()"/>
     </span>
+
+
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>

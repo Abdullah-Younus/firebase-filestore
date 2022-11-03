@@ -13,7 +13,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 var allformData = [];
-
+var result = [];
 async function getallData() {
     try {
         await db.collection("createform").get().then((querySnapshot) => {
@@ -41,6 +41,7 @@ function check() {
     let users = localStorage.getItem("all");
     let alluserdata = JSON.parse(users);
     console.log('All Data', alluserdata);
+
     alluserdata.forEach((user) => {
         document.getElementById('card').innerHTML += `
         <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
@@ -55,10 +56,6 @@ function check() {
             <label><b>Posted By:${user.user}</b></label>
         </div>
         `
-        // const img = document.createElement("img");
-        // img.src = user.img;
-        // div = div.b.appendChild(img);
-        // console.log(div);
     })
 
 
@@ -67,16 +64,53 @@ function check() {
 
 function response() {
     const found = document.getElementById('found').checked;
-    const lost = document.getElementById('lost').checked;
+    // const lost = document.getElementById('lost').checked;
     let users = localStorage.getItem("all");
     let alluser = JSON.parse(users);
-    // console.log("lost", lost);
     // console.log("found", found);
+    if (found === true) {
+        found && (result = alluser.filter((item) => item.product_search === "found"));
+        result.forEach((user) => {
+            document.getElementById('check').innerHTML += `
+            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
+                <img src="${user.img}" style="width:300px;height:200px;" />
+                <br/>
+                <br/>   
+                <label>Title field:${user.txt_field}</label>
+                <label>Title Item:${user.title_item}</label>
+                <label>Product Search:${user.product_search}</label>
+                <label>Description:${user.des_item}</label>
+                <label>Description:${user.date}</label>
+                <label><b>Posted By:${user.user}</b></label>
+            </div>
+            `
+        })
+        document.getElementById('card').innerHTML = ""
+    } else {
+        result = null
+        document.getElementById('found').checked = false
+        alluser.forEach((user) => {
+            document.getElementById('card').innerHTML += `
+            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
+                <img src="${user.img}" style="width:300px;height:200px;" />
+                <br/>
+                <br/>   
+                <label>Title field:${user.txt_field}</label>
+                <label>Title Item:${user.title_item}</label>
+                <label>Product Search:${user.product_search}</label>
+                <label>Description:${user.des_item}</label>
+                <label>Description:${user.date}</label>
+                <label><b>Posted By:${user.user}</b></label>
+            </div>
+            `
+        })
+        document.getElementById('check').innerHTML = ""
+    }
 
-    let result = [];
 
-    found && (result = alluser.filter((item) => item.product_search === "found"));
-    lost && (result = alluser.filter((item) => item.product_search === "lost"));
+    // lost && (result = alluser.filter((item) => item.product_search === "lost"));
+
+
 
     console.log("found", found);
     console.log("lost", lost);
@@ -84,4 +118,5 @@ function response() {
 }
 
 
-response();
+
+// response();
