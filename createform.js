@@ -11,30 +11,35 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+var imageURL;
+
 const db = firebase.firestore();
 
 var storageRef = firebase.storage().ref();
 
-async function uploadData() {
+
+
+function uploadData() {
     let file = document.getElementById('files').files[0];
     let thisref = storageRef.child(file.name).put(file);
     console.log(file);
     console.log(thisref);
-    await thisref.on('state_changed', function (snapshot) {
+    thisref.on('state_changed', function (snapshot) {
     }, function (error) {
-    }, async function () {
+    }, function () {
         // Uploaded completed successfully, now we can get the download URL
-        await thisref.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+        thisref.snapshot.ref.getDownloadURL().then(function (downloadURL) {
             //getting url of image
             console.log('image URL', downloadURL);
-            localStorage.setItem('imageURL', downloadURL)
+            imageURL = downloadURL;
+            // localStorage.setItem('imageURL', downloadURL)
         });
     });
 }
 
 function createhandleFrom() {
     let currentuser = JSON.parse(localStorage.getItem('currentUser'));
-    let imageURL = localStorage.getItem('imageURL');
+    // let imageURL = localStorage.getItem('imageURL');
 
     var obj1 = {
         user: currentuser.name,
