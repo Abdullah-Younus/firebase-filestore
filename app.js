@@ -43,7 +43,9 @@ async function getData() {
         await db.collection("formdata").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
                 // console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-                userData.push(doc.data())
+                let users = doc.data();
+                users.id = doc.id;
+                userData.push(users);
                 localStorage.setItem('userData', JSON.stringify(userData));
                 console.log("Document userData: ", userData);
             });

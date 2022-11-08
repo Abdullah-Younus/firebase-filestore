@@ -49,6 +49,7 @@ function createhandleFrom() {
         des_item: document.getElementById('des_item').value,
         product_search: document.getElementById('product_search').value,
         date: document.getElementById('date').value,
+        userId: currentuser.id
     }
     console.log('obj1', obj1);
     db.collection("createform").add(obj1).then((docRef) => {

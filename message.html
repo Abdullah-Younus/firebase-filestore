@@ -8,17 +8,23 @@
     <title>Message:</title>
 </head>
 
-<body>
+<body onload="allMessage()">
     <h1>Message Page</h1>
-  
-        <input type="text" id="message" />
-    
-        <button onclick="">Send</button>
+
+    <input type="text" id="message" />
+
+    <button onclick="sendMessage()">Send</button>
+
+    <br />
+    <br />
+    <div id="messages">
+
+    </div>
 
 
-
-    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
     <script src="./home.js" type="text/javascript"></script>
 </body>
 
