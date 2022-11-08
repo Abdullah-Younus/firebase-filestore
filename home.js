@@ -110,7 +110,7 @@ function allMessage() {
     let currentUser = JSON.parse(myName);
     let senderId = currentUser.id;
     const dbRef = firebase.database().ref();
-    dbRef.child("messages").get().then((snapshot) => {
+    dbRef.child("messages").on("value", function (snapshot) {
         // put all messages in array
         let messages = [];
         snapshot.forEach((childSnapshot) => {
@@ -118,7 +118,6 @@ function allMessage() {
             message.id = childSnapshot.key;
             messages.push(message);
         });
-
         // filter messages by sender and receiver
         let filteredMessages = messages.filter((message) => {
             return (message.senderId == senderId && message.receiverId == receiverId) || (message.senderId == receiverId && message.receiverId == senderId);
@@ -127,7 +126,6 @@ function allMessage() {
         filteredMessages.sort((a, b) => {
             return b.timestamp - a.timestamp;
         });
-
         document.getElementById('messages').innerHTML = filteredMessages.map((message) => {
             return `<div class="message">
             <div class="message__name">${message.senderName}</div>
@@ -136,12 +134,7 @@ function allMessage() {
             </div>`
         }).join('<br/>');
         console.log("filteredMessages", filteredMessages);
-        console.log("receiverId", receiverId);
-        console.log("senderId", senderId);
-
-    }).catch((error) => {
-        console.error(error);
-    });
+    })
 
 }
 
