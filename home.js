@@ -90,7 +90,7 @@ function sendMessage() {
         senderName: currentUser.name,
         // "message": message
     });
-    allMessage();
+    return false;
 }
 
 // function getMessagesFromLocalStorage() {
