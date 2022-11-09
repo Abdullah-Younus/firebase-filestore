@@ -47,7 +47,7 @@ async function getData() {
                 users.id = doc.id;
                 userData.push(users);
                 localStorage.setItem('userData', JSON.stringify(userData));
-                console.log("Document userData: ", userData);
+                // console.log("Document userData: ", userData);
             });
         });
 
@@ -74,7 +74,7 @@ function handleLogin() {
         }
     }
     !isFound && alert('Invalid Credentials');
-    console.log('currentUser' + isFound);
+    // console.log('currentUser' + isFound);
 }
 
 

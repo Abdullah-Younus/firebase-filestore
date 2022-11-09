@@ -19,11 +19,18 @@ async function getallData() {
     try {
         await db.collection("createform").get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                let user = doc.data();
-                user.id = doc.id;
-                allformData.push(user);
+                if (allformData !== undefined) {
+                    let user = doc.data();
+                    user.id = doc.id;
+                    allformData.push(user);
+                    check(allformData)
+                    localStorage.setItem("all", JSON.stringify(allformData));
+
+                } else {
+                    return allformData = "NOT ANY DATA";
+                }
             });
-            localStorage.setItem("all", JSON.stringify(allformData));
+
             // console.log('All Data Get', allformData);
         });
 
@@ -38,32 +45,62 @@ async function getallData() {
 
 // allformData get all values function print html tag?
 
-function check() {
+function check(user) {
     // console.log('All Data Get', allformData);
-    let users = localStorage.getItem("all");
-    let alluserdata = JSON.parse(users);
-    console.log('All Data', alluserdata);
+    // let users = allformData;
+    // let alluserdata = JSON.parse(allformData);
+    if (user) {
+        user.forEach((user) => {
+            console.log('Ya Wala OBJ SEBDER', user);
+            document.getElementById('card').innerHTML += `
+            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
+    
+                    <img src="${user.img}" style="width:300px;height:200px;" />
+                    <br/>
+                    <br/>   
+                    <label>Title field:${user.txt_field}</label>
+                    <label>Title Item:${user.title_item}</label>
+                    <label>Product Search:${user.product_search}</label>
+                    <label>Description:${user.des_item}</label>
+                    <label>Description:${user.date}</label>
+                    <label><b>Posted By:${user.user}</b></label>
+                    <button type="button" onclick="return handleMessage('./message.html'+'?'+'${user.userId}','${user.userId}')">Chat</button>
+            </div>
+            `
+        })
+    }
 
-    alluserdata.forEach((user) => {
-        console.log('Ya Wala OBJ SEBDER', user);
-        document.getElementById('card').innerHTML += `
-        <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
-            
-                <img src="${user.img}" style="width:300px;height:200px;" />
-                <br/>
-                <br/>   
-                <label>Title field:${user.txt_field}</label>
-                <label>Title Item:${user.title_item}</label>
-                <label>Product Search:${user.product_search}</label>
-                <label>Description:${user.des_item}</label>
-                <label>Description:${user.date}</label>
-                <label><b>Posted By:${user.user}</b></label>
-                <label><b>USER ID:${user.userId}</b></label>
-                <button type="button" onclick="return handleMessage('./message.html'+'?'+'${user.userId}','${user.userId}')">Message</button>
-        </div>
-        `
-    })
+
 }
+
+// function handleDelete(id) {
+//     let users = localStorage.getItem("all");
+//     let alluserdata = JSON.parse(users);
+//     console.log('All Data', alluserdata);
+//     // localstorage array of multiply objects one index delete?
+
+//     //remove object
+//     for (var i = 0; alluserdata.length; i++) {
+//         var data = alluserdata.data[i];
+//         if (i === id) {
+//             alluserdata.data.splice(data, 1);
+//         }
+//     }
+
+//     console.log();
+
+//     // alluserdata.forEach((user) => {
+//     //     if (user.id === id) {
+//     //         document.getElementById('card').innerHTML = "";
+//     //     }
+//     // });
+//     // db.collection("createform").doc(id).delete().then(() => {
+//     //     console.log("Document successfully deleted!");
+//     // }).catch((error) => {
+//     //     console.error("Error removing document: ", error);
+//     // });
+
+// }
 
 function handleMessage(url, id) {
     console.log('ID CHECK', id);
@@ -88,17 +125,9 @@ function sendMessage() {
         message: message,
         timestamp: Date.now(),
         senderName: currentUser.name,
-        // "message": message
     });
-    return false;
-}
 
-// function getMessagesFromLocalStorage() {
-//     let data = [];
-//     let msg = localStorage.getItem('Messages');
-//     let update = JSON.parse(msg);
-//     console.log(typeof update);
-// }
+}
 
 function allMessage() {
     var url = document.URL;
@@ -118,6 +147,7 @@ function allMessage() {
             message.id = childSnapshot.key;
             messages.push(message);
         });
+
         // filter messages by sender and receiver
         let filteredMessages = messages.filter((message) => {
             return (message.senderId == senderId && message.receiverId == receiverId) || (message.senderId == receiverId && message.receiverId == senderId);
@@ -126,18 +156,22 @@ function allMessage() {
         filteredMessages.sort((a, b) => {
             return b.timestamp - a.timestamp;
         });
+        // show messages in html with delete button
         document.getElementById('messages').innerHTML = filteredMessages.map((message) => {
             return `<div class="message">
-            <div class="message__name">${message.senderName}</div>
-            <div class="message__text">${message.message}</div>
-            <div class="message__time">${message.timestamp}</div>
+            <div class="message__name"><b>Name: ${message.senderName}</b></div>
+            <div class="message__text">Message:${message.message}</div>
+            <button class="btn btn-danger" onclick="deleteMessage('${message.id}')">Delete</button>
             </div>`
         }).join('<br/>');
+
         console.log("filteredMessages", filteredMessages);
     })
-
 }
 
+function deleteMessage(id) {
+    firebase.database().ref('messages/' + id).remove();
+}
 
 function response() {
     const found = document.getElementById('found').checked;
@@ -194,8 +228,6 @@ function response() {
     console.log("Result", result);
 }
 
-
-
 function lost() {
     const lost = document.getElementById('lost').checked;
     let users = localStorage.getItem("all");
@@ -242,5 +274,3 @@ function lost() {
     }
 }
 
-
-// response();
