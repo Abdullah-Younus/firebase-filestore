@@ -25,7 +25,6 @@ async function getallData() {
                     allformData.push(user);
                     check(allformData)
                     localStorage.setItem("all", JSON.stringify(allformData));
-
                 } else {
                     return allformData = "NOT ANY DATA";
                 }
@@ -113,6 +112,11 @@ function sendMessage() {
     var url = document.URL;
     var url_array = url.split('?') // Split the string into an array with / as separator
     var receiverId = url_array[url_array.length - 1];  // Get the last part of the array (-1)
+    // find user from local storage by receiverId
+    let users = localStorage.getItem("userData");
+    let alluserdata = JSON.parse(users);
+    let user = alluserdata.find((user) => user.id === receiverId);
+    // return console.log('user :', user);
     let myName = localStorage.getItem('currentUser');
     let currentUser = JSON.parse(myName);
     console.log(currentUser.name);
@@ -121,12 +125,14 @@ function sendMessage() {
     console.log('Message :', message);
     firebase.database().ref("messages").push().set({
         receiverId: receiverId,
+        receiverName: user.name,
         senderId: currentUser.id,
-        message: message,
-        timestamp: Date.now(),
         senderName: currentUser.name,
+        message: message,
+        read: false,
+        timestamp: Date.now(),
     });
-
+    // allMessage();
 }
 
 function allMessage() {
@@ -134,7 +140,6 @@ function allMessage() {
     var url_array = url.split('?') // Split the string into an array with / as separator
     var receiverId = url_array[url_array.length - 1];
     console.log('receiverId', receiverId);
-
     let myName = localStorage.getItem('currentUser');
     let currentUser = JSON.parse(myName);
     let senderId = currentUser.id;
@@ -142,12 +147,14 @@ function allMessage() {
     dbRef.child("messages").on("value", function (snapshot) {
         // put all messages in array
         let messages = [];
-        snapshot.forEach((childSnapshot) => {
-            let message = childSnapshot.val();
-            message.id = childSnapshot.key;
-            messages.push(message);
+        // read messages and update read status
+        snapshot.forEach(function (childSnapshot) {
+            let childData = childSnapshot.val();
+            messages.push(childData);
+            if (childData.receiverId == senderId && childData.senderId == receiverId) {
+                firebase.database().ref('messages/' + childSnapshot.key).update({ read: true });
+            }
         });
-
         // filter messages by sender and receiver
         let filteredMessages = messages.filter((message) => {
             return (message.senderId == senderId && message.receiverId == receiverId) || (message.senderId == receiverId && message.receiverId == senderId);
@@ -159,13 +166,11 @@ function allMessage() {
         // show messages in html with delete button
         document.getElementById('messages').innerHTML = filteredMessages.map((message) => {
             return `<div class="message">
-            <div class="message__name"><b>Name: ${message.senderName}</b></div>
-            <div class="message__text">Message:${message.message}</div>
+            <div class="message__name">${message.senderName}</div>
+            <div class="message__text">${message.message}</div>
             <button class="btn btn-danger" onclick="deleteMessage('${message.id}')">Delete</button>
             </div>`
         }).join('<br/>');
-
-        console.log("filteredMessages", filteredMessages);
     })
 }
 
