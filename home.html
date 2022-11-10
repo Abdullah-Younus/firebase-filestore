@@ -32,7 +32,7 @@
 </head>
 
 
-<body onload="getallData();check();getNewMessages();showUsers();"
+<body onload="getallData();allPostRender();getNewMessages();showUsers();"
     style="display: flex; justify-content: space-between;">
     <div>
         <div><a href="./createform.html">Create From</a></div>
@@ -43,7 +43,7 @@
 
         <span>
             <label for="found">Found:</label>
-            <input type="checkbox" name="found" id="found" value="found" onclick="response()" />
+            <input type="checkbox" name="found" id="found" value="found" onclick="found()" />
         </span>
 
         <br />

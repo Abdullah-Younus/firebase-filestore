@@ -33,10 +33,9 @@ async function getallData() {
     }
 }
 
-
 // allformData get all values function print html tag?
 
-function check() {
+function allPostRender() {
     // console.log('All Data Get', allformData);
     let users = localStorage.getItem("all");
     let alluserdata = JSON.parse(users);
@@ -162,7 +161,7 @@ function deleteMessage(id) {
     firebase.database().ref('messages/' + id).remove();
 }
 
-function response() {
+function found() {
     const found = document.getElementById('found').checked;
     // const lost = document.getElementById('lost').checked;
     let users = localStorage.getItem("all");
