@@ -56,7 +56,6 @@ function check() {
                 <label>Description:${user.des_item}</label>
                 <label>Description:${user.date}</label>
                 <label><b>Posted By:${user.user}</b></label>
-                <label><b>USER ID:${user.userId}</b></label>
                 <button type="button" onclick="return handleMessage('./message.html'+'?'+'${user.userId}','${user.userId}')">Message</button>
         </div>
         `
