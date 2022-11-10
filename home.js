@@ -12,7 +12,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-
 var allformData = [];
 var result = [];
 async function getallData() {
@@ -32,8 +31,6 @@ async function getallData() {
         console.log(error);
     }
 }
-
-// allformData get all values function print html tag?
 
 function allPostRender() {
     // console.log('All Data Get', allformData);
@@ -55,6 +52,7 @@ function allPostRender() {
                 <label>Description:${user.des_item}</label>
                 <label>Description:${user.date}</label>
                 <label><b>Posted By:${user.user}</b></label>
+                <label><b>USER ID:${user.userId}</b></label>
                 <button type="button" onclick="return handleMessage('./message.html'+'?'+'${user.userId}','${user.userId}')">Message</button>
         </div>
         `
@@ -73,13 +71,9 @@ function handleMessage(url, id) {
         })
     })
 
-
-
     console.log('ID CHECK', id);
     console.log('URL ', url);
-    // window.location.href = "./message.html"
     window.open(url, '_blank');
-
 }
 
 function sendMessage() {
@@ -161,109 +155,42 @@ function deleteMessage(id) {
     firebase.database().ref('messages/' + id).remove();
 }
 
-function found() {
+function filterData() {
     const found = document.getElementById('found').checked;
-    // const lost = document.getElementById('lost').checked;
-    let users = localStorage.getItem("all");
-    let alluser = JSON.parse(users);
-    // console.log("found", found);
-    if (found === true) {
-        found && (result = alluser.filter((item) => item.product_search === "found"));
-        result.forEach((user) => {
-            document.getElementById('check').innerHTML += `
-            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
-                <img src="${user.img}" style="width:300px;height:200px;" />
-                <br/>
-                <br/>   
-                <label>Title field:${user.txt_field}</label>
-                <label>Title Item:${user.title_item}</label>
-                <label>Product Search:${user.product_search}</label>
-                <label>Description:${user.des_item}</label>
-                <label>Description:${user.date}</label>
-                <label><b>Posted By:${user.user}</b></label>
-            </div>
-            `
-        })
-        document.getElementById('card').innerHTML = ""
-    } else {
-        result = null
-        document.getElementById('found').checked = false
-        alluser.forEach((user) => {
-            document.getElementById('card').innerHTML += `
-            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
-                <img src="${user.img}" style="width:300px;height:200px;" />
-                <br/>
-                <br/>   
-                <label>Title field:${user.txt_field}</label>
-                <label>Title Item:${user.title_item}</label>
-                <label>Product Search:${user.product_search}</label>
-                <label>Description:${user.des_item}</label>
-                <label>Description:${user.date}</label>
-                <label><b>Posted By:${user.user}</b></label>
-            </div>
-            `
-        })
-        document.getElementById('check').innerHTML = ""
-    }
-
-
-    // lost && (result = alluser.filter((item) => item.product_search === "lost"));
-
-
-
-    console.log("found", found);
-    console.log("lost", lost);
-}
-
-function lost() {
     const lost = document.getElementById('lost').checked;
-    let users = localStorage.getItem("all");
-    let alluser = JSON.parse(users);
-    console.log("found", found);
 
-    if (lost === true) {
-        lost && (result = alluser.filter((item) => item.product_search === "lost"));
-        result.forEach((user) => {
-            document.getElementById('check').innerHTML += `
-            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
-                <img src="${user.img}" style="width:300px;height:200px;" />
-                <br/>
-                <br/>   
-                <label>Title field:${user.txt_field}</label>
-                <label>Title Item:${user.title_item}</label>
-                <label>Product Search:${user.product_search}</label>
-                <label>Description:${user.des_item}</label>
-                <label>Description:${user.date}</label>
-                <label><b>Posted By:${user.user}</b></label>
-            </div>
-            `
-        })
-        document.getElementById('card').innerHTML = ""
-    } else {
-        result = null
-        document.getElementById('found').checked = false
-        alluser.forEach((user) => {
-            document.getElementById('card').innerHTML += `
-            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
-                <img src="${user.img}" style="width:300px;height:200px;" />
-                <br/>
-                <br/>   
-                <label>Title field:${user.txt_field}</label>
-                <label>Title Item:${user.title_item}</label>
-                <label>Product Search:${user.product_search}</label>
-                <label>Description:${user.des_item}</label>
-                <label>Description:${user.date}</label>
-                <label><b>Posted By:${user.user}</b></label>
-            </div>
-            `
-        })
-        document.getElementById('check').innerHTML = ""
-    }
+    // get posts from local storage and filter by found or lost
+    let posts = localStorage.getItem("all");
+    let allposts = JSON.parse(posts);
+    let filteredPosts = allposts.filter((post) => {
+        return (found && !lost && post.product_search === 'found') || (!found && lost && post.product_search === 'lost') || (!found && !lost);
+    });
+
+    console.log("check response -> filtered posts", filteredPosts);
+
+    document.getElementById('card').innerHTML = '';
+
+    filteredPosts.forEach((post) => {
+        document.getElementById('card').innerHTML += `
+    <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px">
+            <img src="${post.img}" style="width:300px;height:200px;" />
+            <br/>
+            <br/>   
+            <label>Title field:${post.txt_field}</label>
+            <label>Title Item:${post.title_item}</label>
+            <label>Product Search:${post.product_search}</label>
+            <label>Description:${post.des_item}</label>
+            <label>Description:${post.date}</label>
+            <label><b>Posted By:${post.user}</b></label>
+            <label><b>USER ID:${post.userId}</b></label>
+            <button type="button" onclick="return handleMessage('./message.html'+'?'+'${post.userId}','${post.userId}')">Message</button>
+    </div>
+    `
+    })
 }
 
 // let result = [];
 function getNewMessages() {
-
     let user = localStorage.getItem("currentUser");
     let currentUser = JSON.parse(user);
 
@@ -275,16 +202,11 @@ function getNewMessages() {
             return (message.receiverId == currentUser.id && message.read === false);
         });
 
-        console.log("filteredMessages: ", filteredMessages);
-
         // filter messages groupby senderId and count them
         let groupedMessages = filteredMessages.reduce((r, a) => {
             r[a.senderId] = [...r[a.senderId] || [], a];
             return r;
         }, {});
-
-        console.log("groupedMessages: ", groupedMessages);
-
 
         // group messages by senderId and count them
         let groupedMessagesCount = Object.keys(groupedMessages).map((key) => {
@@ -312,29 +234,11 @@ function getNewMessages() {
     })
 }
 
-// function childChange() {
-//     // get user from local storage
-//     let user = localStorage.getItem("currentUser");
-//     let currentUser = JSON.parse(user);
-
-//     // when message is read, update the message status to read
-//     firebase.database().ref('messages').on('child_changed', (snapshot) => {
-//         const message = snapshot.val();
-//         if (message.receiverId === currentUser.id && message.read === true) {
-//             firebase.database().ref('messages/' + message.id).update({
-//                 read: true
-//             });
-//         }
-//     });
-
-//     // update the notification count
-//     getNewMessages();
-
-// }
-
+// show users List
 function showUsers() {
     let users = localStorage.getItem("userData");
     let allUsers = JSON.parse(users);
+
     // append users to usersList innerHTML
     allUsers.forEach((user) => {
         document.getElementById('allUsers').innerHTML += `
