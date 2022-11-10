@@ -32,33 +32,55 @@
 </head>
 
 
-<body onload="getallData();check()">
+<body onload="getallData();check();getNewMessages();showUsers();"
+    style="display: flex; justify-content: space-between;">
     <div>
-        <a href="./createform.html">Create From</a>
-    </div>
-    <div id="check" style="width: 80%; display: flex;justify-content: space-between;flex-wrap: wrap;float: right;">
+        <div><a href="./createform.html">Create From</a></div>
+        <br />
+        <br />
+        <div id="check" style="width: 80%; display: flex;justify-content: space-between;flex-wrap: wrap;float: right;">
+        </div>
+
+        <span>
+            <label for="found">Found:</label>
+            <input type="checkbox" name="found" id="found" value="found" onclick="response()" />
+        </span>
+
+        <br />
+        <br />
+        <span>
+            <label for="lost">Lost:</label>
+            <input type="checkbox" name="lost" id="lost" value="lost" onclick="lost()" />
+        </span>
+
+        <br />
+        <br />
+
+        <!-- list of chat users -->
+        <div id="users">
+            <h4>New Messages</h4>
+            <div id="usersList" style="cursor: pointer">
+
+            </div>
+        </div>
+
+        <!-- list of chat users -->
+        <div>
+            <h4>ALL USERS</h4>
+            <div id="allUsers" style="cursor: pointer">
+
+            </div>
+        </div>
 
     </div>
-
     <div id="card" style="width: 80%; display: flex;justify-content: space-between;flex-wrap: wrap;float: right;">
     </div>
-    <br />
-    <br />
-    <span>
-        <label for="found">Found:</label>
-        <input type="checkbox" name="found" id="found" value="found" onclick="response()" />
-    </span>
 
-    <br />
-    <br />
-    <span>
-        <label for="lost">Lost:</label>
-        <input type="checkbox" name="lost" id="lost" value="lost" onclick="lost()" />
-    </span>
 
 
 
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
     <script src="./home.js"></script>
 </body>
