@@ -32,7 +32,7 @@ async function getallData() {
     }
 }
 
-function check() {
+function allPosts() {
     // console.log('All Data Get', allformData);
     let posts = localStorage.getItem("all");
     let postsData = JSON.parse(posts);
@@ -47,9 +47,6 @@ function check() {
                 <label>Title field:${post.txt_field}</label>
                 <label>Title Item:${post.title_item}</label>
                 <label>Product Search:${post.product_search}</label>
-                <label>Description:${post.des_item}</label>
-                <label>Description:${post.date}</label>
-                <label><b>Posted By:${post.user}</b></label>
                 <button type="button" onclick="return handleMessage('./message.html'+'?'+'${post.userId}','${post.userId}')">Message</button>
                 <button type="button" onclick="return deletePost('${post.id}')">Delete</button>
         
