@@ -41,16 +41,17 @@ function allPosts() {
     postsData.forEach((post) => {
         console.log('Ya Wala OBJ SEBDER', post);
         document.getElementById('card').innerHTML += `
-        <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:400px;padding:5px;margin:5px"> 
+        <a href="./cardDetails.html?${post.id}" style="text-decoration:none;margin-left:100px;color:black; ">
+            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:400px;padding:5px;margin:5px"> 
                 <img src="${post.img}" style="width:300px;height:200px;border-radius: 20px;" />
                 <br/>   
-                <label>Title field:${post.txt_field}</label>
-                <label>Title Item:${post.title_item}</label>
-                <label>Product Search:${post.product_search}</label>
+                <label style="width: 190px;">Title field:${post.txt_field}</label>
+                <label style="width: 200px;">Product Search:${post.product_search}</label>
+                <label style="width: 200px;"><b>Posted By:${post.user}</b></label>
                 <button type="button" onclick="return handleMessage('./message.html'+'?'+'${post.userId}','${post.userId}')">Message</button>
                 <button type="button" onclick="return deletePost('${post.id}')">Delete</button>
-        
-        </div>
+            </div>
+        </a>    
         `
     })
 }
@@ -160,26 +161,26 @@ function response() {
     let allposts = JSON.parse(posts);
     let filteredPosts = allposts.filter((post) => {
         return (found && !lost && post.product_search === 'found') || (!found && lost && post.product_search === 'lost') || (!found && !lost);
-    });
 
+    });
     console.log("check response -> filtered posts", filteredPosts);
 
     document.getElementById('card').innerHTML = '';
 
     filteredPosts.forEach((post) => {
         document.getElementById('card').innerHTML += `
-        <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:400px;padding:5px;margin:5px"> 
-            <img src="${post.img}" style="width:300px;height:200px;border-radius: 20px;" />
-            <br/>   
-            <label>Title field:${post.txt_field}</label>
-            <label>Title Item:${post.title_item}</label>
-            <label>Product Search:${post.product_search}</label>
-            <label>Description:${post.des_item}</label>
-            <label>Description:${post.date}</label>
-            <label><b>Posted By:${post.user}</b></label>
-            <button type="button" onclick="return handleMessage('./message.html'+'?'+'${post.userId}','${post.userId}')">Message</button>
-        </div>
-    `
+        <a href="./cardDetails.html" style="text-decoration:none;margin-left:100px;color:black;">
+            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:400px;padding:5px;margin:5px"> 
+                <img src="${post.img}" style="width:300px;height:200px;border-radius: 20px;" />
+                <br/>   
+                <label style="width: 190px;">Title field:${post.txt_field}</label>
+                <label style="width: 200px;">Product Search:${post.product_search}</label>
+                <label style="width: 200px;"><b>Posted By:${post.user}</b></label>
+                <button type="button" onclick="return handleMessage('./message.html'+'?'+'${post.userId}','${post.userId}')">Message</button>
+                <button type="button" onclick="return deletePost('${post.id}')">Delete</button>
+            </div>
+        </a>    
+        `
     })
 }
 
@@ -261,4 +262,64 @@ function deletePost(id) {
     });
 
 
+}
+
+
+// details page Card
+function detailPosts() {
+    var url = document.URL;
+    var url_array = url.split('?') // Split the string into an array with / as separator
+    var receiverId = url_array[url_array.length - 1];
+    console.log('receiverId', receiverId);
+    let posts = localStorage.getItem("all");
+    let postsData = JSON.parse(posts);
+    console.log('All Data', postsData);
+    let filterpost = postsData.find((post) => post.id === receiverId)
+    console.log('Filter Post :', filterpost);
+    document.getElementById('product_img').src = filterpost.img;
+    document.getElementById('title').innerHTML = "Title :" + filterpost.title_item;
+    document.getElementById('title_field').innerHTML = "Title Item:" + filterpost.txt_field;
+    document.getElementById('product_found').innerHTML = "Product :" + filterpost.product_search;
+    document.getElementById('Description').innerHTML = filterpost.des_item;
+    document.getElementById('User').innerHTML = "Posted By :" +filterpost.user;
+
+
+    // document.getElementById('card').innerHTML += `
+    // <div style="display: flex;"> 
+    //     <img src="${filterpost.img}" style="width:300px;height:200px;border-radius: 20px;margin-top:50px" />
+    //     <label>Title field:${filterpost.title_item}</label>
+    //     <label>Title field:${filterpost.txt_field}</label>
+    //     <label>Title field:${filterpost.des_item}</label>
+    //     <label>Product Search:${filterpost.product_search}</label>
+    //     <label><b>Posted By:${filterpost.user}</b></label>
+    // </div>
+    // `
+
+}
+
+// Initialize and add the map User upper pass kiya han getallData kae function ma
+function initMap() {
+    let posts = localStorage.getItem("all");
+    let postsData = JSON.parse(posts);
+    // console.log('initMap Check ', postsData);
+    // let position = postsData.map((item) => item.position);
+
+
+    // console.log('position', position);
+
+
+
+
+    // The location of Uluru
+    const uluru = { lat: -25.344, lng: 131.031 };
+    // The map, centered at Uluru
+    const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 4,
+        center: uluru,
+    });
+    // The marker, positioned at Uluru
+    const marker = new google.maps.Marker({
+        position: uluru,
+        map: map,
+    });
 }
