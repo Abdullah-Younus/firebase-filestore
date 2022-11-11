@@ -12,7 +12,7 @@ body {
     border-radius: 5px;
     overflow: hidden;
     margin: 5em auto;
-    height: 350px;
+    height: 390px;
     width: 700px;
 
 }
@@ -32,7 +32,7 @@ body {
 }
 
 /* 	Product Name */
-#container .product-details h1{
+#container .product-details h1 {
     font-family: 'Old Standard TT', serif;
     display: inline-block;
     position: relative;
