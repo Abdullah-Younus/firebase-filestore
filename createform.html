@@ -6,6 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Form</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style>
+        #map {
+            height: 400px;
+            /* The height is 400 pixels */
+            width: 100%;
+            /* The width is the width of the web page */
+        }
+    </style>
 </head>
 
 <body>
@@ -30,6 +39,7 @@
             <input type="text" id="des_item" required />
             <br />
             <br />
+            <div id="map" style="width:40%;float:right;"></div>
             <span>
                 <label>Search</label>
                 <select id="product_search">
@@ -63,6 +73,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-dC73nVy_C1jMuooBM3XEIPs8OykJUhg&callback=initMap"></script>
     <script src="createform.js"></script>
 </body>
 

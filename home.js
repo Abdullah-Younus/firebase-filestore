@@ -32,28 +32,27 @@ async function getallData() {
     }
 }
 
-function allPostRender() {
+function check() {
     // console.log('All Data Get', allformData);
-    let users = localStorage.getItem("all");
-    let alluserdata = JSON.parse(users);
-    console.log('All Data', alluserdata);
+    let posts = localStorage.getItem("all");
+    let postsData = JSON.parse(posts);
+    console.log('All Data', postsData);
 
-    alluserdata.forEach((user) => {
-        console.log('Ya Wala OBJ SEBDER', user);
+    postsData.forEach((post) => {
+        console.log('Ya Wala OBJ SEBDER', post);
         document.getElementById('card').innerHTML += `
-        <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px"> 
-            
-                <img src="${user.img}" style="width:300px;height:200px;" />
-                <br/>
+        <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:400px;padding:5px;margin:5px"> 
+                <img src="${post.img}" style="width:300px;height:200px;border-radius: 20px;" />
                 <br/>   
-                <label>Title field:${user.txt_field}</label>
-                <label>Title Item:${user.title_item}</label>
-                <label>Product Search:${user.product_search}</label>
-                <label>Description:${user.des_item}</label>
-                <label>Description:${user.date}</label>
-                <label><b>Posted By:${user.user}</b></label>
-                <label><b>USER ID:${user.userId}</b></label>
-                <button type="button" onclick="return handleMessage('./message.html'+'?'+'${user.userId}','${user.userId}')">Message</button>
+                <label>Title field:${post.txt_field}</label>
+                <label>Title Item:${post.title_item}</label>
+                <label>Product Search:${post.product_search}</label>
+                <label>Description:${post.des_item}</label>
+                <label>Description:${post.date}</label>
+                <label><b>Posted By:${post.user}</b></label>
+                <button type="button" onclick="return handleMessage('./message.html'+'?'+'${post.userId}','${post.userId}')">Message</button>
+                <button type="button" onclick="return deletePost('${post.id}')">Delete</button>
+        
         </div>
         `
     })
@@ -155,7 +154,7 @@ function deleteMessage(id) {
     firebase.database().ref('messages/' + id).remove();
 }
 
-function filterData() {
+function response() {
     const found = document.getElementById('found').checked;
     const lost = document.getElementById('lost').checked;
 
@@ -172,9 +171,8 @@ function filterData() {
 
     filteredPosts.forEach((post) => {
         document.getElementById('card').innerHTML += `
-    <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:100%;padding:5px;margin:5px">
-            <img src="${post.img}" style="width:300px;height:200px;" />
-            <br/>
+        <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:400px;padding:5px;margin:5px"> 
+            <img src="${post.img}" style="width:300px;height:200px;border-radius: 20px;" />
             <br/>   
             <label>Title field:${post.txt_field}</label>
             <label>Title Item:${post.title_item}</label>
@@ -182,9 +180,8 @@ function filterData() {
             <label>Description:${post.des_item}</label>
             <label>Description:${post.date}</label>
             <label><b>Posted By:${post.user}</b></label>
-            <label><b>USER ID:${post.userId}</b></label>
             <button type="button" onclick="return handleMessage('./message.html'+'?'+'${post.userId}','${post.userId}')">Message</button>
-    </div>
+        </div>
     `
     })
 }
@@ -246,4 +243,25 @@ function showUsers() {
                 <p>${user.name}</p>
             </div>`
     });
+}
+
+// delete from firebase firestore
+
+function deletePost(id) {
+    console.log('id: ', id);
+
+    firebase.firestore().collection('createform').doc(id).delete().then(() => {
+        console.log('Document successfully deleted!');
+        let posts = localStorage.getItem("all");
+        let allposts = JSON.parse(posts);
+        let filteredPosts = allposts.filter((post) => {
+            return post.id !== id;
+        });
+        localStorage.setItem("all", JSON.stringify(filteredPosts));
+        window.location.reload();
+    }).catch((error) => {
+        console.error('Error removing document: ', error);
+    });
+
+
 }
