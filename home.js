@@ -281,27 +281,19 @@ function detailPosts() {
     document.getElementById('title_field').innerHTML = "Title Item:" + filterpost.txt_field;
     document.getElementById('product_found').innerHTML = "Product :" + filterpost.product_search;
     document.getElementById('Description').innerHTML = filterpost.des_item;
-    document.getElementById('User').innerHTML = "Posted By :" +filterpost.user;
-
-
-    // document.getElementById('card').innerHTML += `
-    // <div style="display: flex;"> 
-    //     <img src="${filterpost.img}" style="width:300px;height:200px;border-radius: 20px;margin-top:50px" />
-    //     <label>Title field:${filterpost.title_item}</label>
-    //     <label>Title field:${filterpost.txt_field}</label>
-    //     <label>Title field:${filterpost.des_item}</label>
-    //     <label>Product Search:${filterpost.product_search}</label>
-    //     <label><b>Posted By:${filterpost.user}</b></label>
-    // </div>
-    // `
-
+    document.getElementById('User').innerHTML = "Posted By :" + filterpost.user;
 }
 
 // Initialize and add the map User upper pass kiya han getallData kae function ma
 function initMap() {
     let posts = localStorage.getItem("all");
     let postsData = JSON.parse(posts);
-    // console.log('initMap Check ', postsData);
+    var url = document.URL;
+    var url_array = url.split('?') // Split the string into an array with / as separator
+    var receiverId = url_array[url_array.length - 1];
+    console.log('initMap Check ', postsData);
+    let filterpost = postsData.find((post) => post.id === receiverId);
+    console.log('filterpost :', filterpost.position);
     // let position = postsData.map((item) => item.position);
 
 
@@ -311,10 +303,10 @@ function initMap() {
 
 
     // The location of Uluru
-    const uluru = { lat: -25.344, lng: 131.031 };
+    const uluru = { lat: filterpost.position.lat, lng: filterpost.position.lng };
     // The map, centered at Uluru
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 4,
+        zoom: 20,
         center: uluru,
     });
     // The marker, positioned at Uluru
