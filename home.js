@@ -196,18 +196,23 @@ function response() {
 
     filteredPosts.forEach((post) => {
         document.getElementById('card').innerHTML += `
-        <a href="./cardDetails.html" style="text-decoration:none;margin-left:100px;color:black;">
-            <div style="display: flex;align-items: center;flex-direction: column;width:25%;height:400px;padding:5px;margin:5px"> 
-                <img src="${post.img}" style="width:300px;height:200px;border-radius: 20px;" />
-                <br/>   
-                <label style="width: 190px;">Title field:${post.txt_field}</label>
-                <label style="width: 200px;">Product Search:${post.product_search}</label>
-                <label style="width: 200px;"><b>Posted By:${post.user}</b></label>
+        <div style="border: 2px solid grey; height: 400px; display: flex; flex-direction: column; align-items: center;border-radius: 20px;">
+            <div style="padding:5px;margin:5px">
+                <a href="./cardDetails.html?${post.id}" style="text-decoration:none;color:black;display: flex;align-items: center;flex-direction: column;width:300px;">
+                    <img src="${post.img}" style="width:300px;height:200px;border-radius:20px;" />
+                    <h3>Title:${post.txt_field}</h3>
+                    <div style="font-size: 12px; color: grey;display:flex;justify-content:space-between;width:300px;">
+                        <h4>Status:${post.product_search}</h4>
+                        <h4>Posted By:${post.user}</h4>
+                    </div>
+                </a>  
             </div>
-        </a>    
-                <button type="button" onclick="return handleMessage('./message.html'+'?'+'${post.userId}','${post.userId}')">Message</button>
-                <button type="button" onclick="return deletePost('${post.id}')">Delete</button>
-        `
+            <div style="display:flex;justify-content:space-evenly;cursor: pointer;">  
+                <button style="cursor: pointer; margin-right: 20px;padding: 10px 20px; border-radius: 20px;color: white; background-color: darkgreen;" type="button" onclick="return handleMessage('./message.html'+'?'+'${post.userId}','${post.userId}')">Message</button>
+                <button style="cursor: pointer;padding: 10px 20px; border-radius: 20px;color: white; background-color: red;" type="button" onclick="return deletePost('${post.id}')">Delete</button>
+            </div>
+        </div>
+            `
     })
 }
 
