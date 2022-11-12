@@ -70,58 +70,30 @@ function createhandleFrom() {
 // prompted by your browser. If you see the error "The Geolocation service
 // failed.", it means you probably did not give permission for the browser to
 // locate you.
-let map, infoWindow;
-
-
+let map;
 function initMap() {
+    var latlng = new google.maps.LatLng(24.8607, 67.0011);
     map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 49.246292, lng: -123.116226 },
-        zoom: 20,
+        center: latlng,
+        zoom: 15,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    infoWindow = new google.maps.InfoWindow();
-
-    const locationButton = document.createElement("button");
-
-    locationButton.textContent = "Pan to Current Location";
-    locationButton.classList.add("custom-map-control-button");
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-    locationButton.addEventListener("click", () => {
-        // Try HTML5 geolocation.
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude,
-                    };
-                    positionObj = pos;
-                    console.log('Lat Long Object :', positionObj);
-                    infoWindow.setPosition(pos);
-                    infoWindow.setContent("Location found.");
-                    infoWindow.open(map);
-                    map.setCenter(pos);
-                },
-                () => {
-                    handleLocationError(true, infoWindow, map.getCenter());
-                }
-            );
-        } else {
-            // Browser doesn't support Geolocation
-            handleLocationError(false, infoWindow, map.getCenter());
+    // google.maps.event.addListener(map, 'click', function (event) {
+    var marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        title: 'Place the marker for your location!',
+        draggable: true
+    });
+    google.maps.event.addListener(marker, 'dragend', function (a) {
+        console.log("a", a);
+        positionObj = {
+            lat: a.latLng.lat(),
+            lng: a.latLng.lng()
         }
+        console.log('positionObj', positionObj);
     });
 }
-
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(
-        browserHasGeolocation
-            ? "Error: The Geolocation service failed."
-            : "Error: Your browser doesn't support geolocation."
-    );
-    infoWindow.open(map);
-}
-
 window.initMap = initMap;
 
 
