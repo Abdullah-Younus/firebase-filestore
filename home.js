@@ -327,22 +327,19 @@ function initMap() {
     let filterpost = postsData.find((post) => post.id === receiverId);
     console.log('filterpost :', filterpost.position);
     // let position = postsData.map((item) => item.position);
-
-
     // console.log('position', position);
-
-
-
     // The location of Uluru
-    const uluru = { lat: filterpost.position.lat, lng: filterpost.position.lng };
-    // The map, centered at Uluru
+    // const uluru = { lat: filterpost.position.lat, lng: filterpost.position.lng };
+    // // The map, centered at Uluru
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 20,
-        center: uluru,
+        center: filterpost.position,
     });
-    // The marker, positioned at Uluru
-    const marker = new google.maps.Marker({
-        position: uluru,
-        map: map,
+    // // The marker, positioned at Uluru
+    new google.maps.Marker({
+        position: filterpost.position,
+        map,
     });
 }
+
+window.initMap = initMap;
